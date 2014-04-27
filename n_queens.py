@@ -8,7 +8,7 @@ rnd.seed()
 
 def Main():
     ####Setting up the Genotype
-    N = 8
+    N = 8  #Number of Queens and size of chessboard(NXN)
     p=Evolve(N)
 
     #p = [[0 for i in range(N)] for j in range(N)] #Used for Testing
@@ -22,11 +22,12 @@ def Main():
 
     fit = Fitness(p)
     count =0
+    #Want fitness to be 0 so that number of conflicting placements is minimized
     while fit != 0:
         p=Evolve(N)
         fit = Fitness(p)
         print count, fit
-        for i in range(N):
+        for i in range(N): #Printing chessboard congfiguration
             print i,p[i]
         count +=1
    
@@ -38,6 +39,9 @@ def Fitness(phenotype):
     slope_points=[]
     #If the slope of two positions equals 1 or -1,
     #it means they are diagonally checking.
+    #Since we only care about positions that are directly, diagonally putting each other in check
+    #we only need worry about slopes that are eqaul to 1 or -1.  Everything else may be diagonally
+    #positioned compared to our pivot, but not putting the piece in check
     Fitness_Value = 0
     for i in range(len(phenotype)): #Rows
         for j in range(len(phenotype)): #Columns
@@ -46,36 +50,36 @@ def Fitness(phenotype):
             if pivot==1: #Piece is found in row
                 slope_points.append(i)#--->x1,Row
                 slope_points.append(j)#--->y1,Col
-                for k in range(len(phenotype)-1): #Rows-1 (done so that we can compare two rows at a time)
+                for k in range(len(phenotype)-1): #Rows-1 (done so that we can compare two rows at a time); Comparing all other rows to pivot
                     for l in range(len(phenotype)): #Columns
                         check = phenotype[(k+1)][l] #(k+1) Comparing next row
-                        if check==1:
+                        if check==1:#Found a queen at current position
                             slope_points.append(k+1)#--->x2,Row
                             slope_points.append(l)#--->y2,Col
                         if len(slope_points)==4:
+                            #We now have four points with which to do the calculation...
                             m=0
                             #print "x1=",slope_points[0],"y1=",slope_points[1],"x2=",slope_points[2],"y2=",slope_points[3]
                             if slope_points[0]!=slope_points[2] and slope_points[1]!=slope_points[3]:
-                                m = ((float(slope_points[3]-slope_points[1])/(slope_points[2]-slope_points[0]))*-1)  
+                                m = ((float(slope_points[3]-slope_points[1])/(slope_points[2]-slope_points[0]))*-1) #Slope = y2-y1/x2-x1  
                                 #Multiplied slope by -1 so that it matches my conceptual representation of a negative slope/positive slope
+                                #i.e a negative slope being "\" and not "/"
                                 #print slope_points , "Slope=",m
                                 if m ==1.0 or m==-1.0:
+                                    #Fitness value needs to be minimized here so as to have the fewest number of conflicts
                                     Fitness_Value+=1
+                            slope_points.pop() #Pop position 3 and 2 (last two points that are not the pivot)
                             slope_points.pop()
-                            slope_points.pop()
-                            #print slope_points
-                            #since we only care about positions that are directly, diagonally putting each other in check
-                            #we only need worry about slopes that are eqaul to 1 or -1.  Everything else may be diagonally
-                            #positioned compared to our pivot, but not putting the piece in check
-                slope_points.pop()
+                slope_points.pop() #Pop positions 1 and 0; pop off the pivot
                 slope_points.pop()
     return Fitness_Value
     
 def Evolve(N):
+    #Current Strategy: Randomly permute each position the genotype list
     g = list(range(N))
     rnd.shuffle(g)
 
-    ####Setting up the Phenotype
+    ####Setting up the Phenotype: Placing the queens on the board
     p = [[0 for i in range(N)] for j in range(N)]
     for n in range(len(g)):
         p[n][g[n]] = 1
