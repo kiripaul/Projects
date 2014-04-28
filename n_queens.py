@@ -8,8 +8,8 @@ rnd.seed()
 
 def Main():
     ####Setting up the Genotype
-    N = 8  #Number of Queens and size of chessboard(NXN)
-    p=Evolve(N)
+    N = 10  #Number of Queens and size of chessboard(NxN)
+    p,g=Evolve_Mutation(N)
 
     #p = [[0 for i in range(N)] for j in range(N)] #Used for Testing
     #g = list(range(N))                             #Used for Testing
@@ -24,11 +24,11 @@ def Main():
     count =0
     #Want fitness to be 0 so that number of conflicting placements is minimized
     while fit != 0:
-        p=Evolve(N)
+        p,g=Evolve_Mutation(N)
         fit = Fitness(p)
-        print count, fit
+        print count,g,fit
         for i in range(N): #Printing chessboard congfiguration
-            print i,p[i]
+            print p[i]
         count +=1
    
     
@@ -74,8 +74,8 @@ def Fitness(phenotype):
                 slope_points.pop()
     return Fitness_Value
     
-def Evolve(N):
-    #Current Strategy: Randomly permute each position the genotype list
+def Evolve_Mutation(N):
+    #Current Strategy: Randomly permute each position in the genotype list
     g = list(range(N))
     rnd.shuffle(g)
 
@@ -83,7 +83,7 @@ def Evolve(N):
     p = [[0 for i in range(N)] for j in range(N)]
     for n in range(len(g)):
         p[n][g[n]] = 1
-    return p
+    return p,g
             
                         
                 
