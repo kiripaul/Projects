@@ -21,7 +21,7 @@ def Main():
     #    print i,p[i]
     
     #Want fitness to be 0 so that number of conflicting placements is minimized
-    for ii in range(40):
+    for ii in range(10):
         count =0
         p,g=Evolve_Mutation(N)
         fit = Fitness(p)
@@ -90,9 +90,22 @@ def Evolve_Mutation(N):
     for n in range(len(g)):
         p[n][g[n]] = 1
     return p,g
-            
-                        
-                
+    
+def Evolve_Recombination(N):
+    #Current Strategy: Randomly permute each position in the genotype list
+    g1 = list(range(N))
+    g2 = list(range(N))
+    rnd.shuffle(g1)
+    rnd.shuffle(g2)
+
+    ####Setting up the Phenotype: Placing the queens on the board
+    p1 = [[0 for i in range(N)] for j in range(N)]
+    p2 = [[0 for i in range(N)] for j in range(N)]
+    for n in range(len(g1)):
+        p1[n][g1[n]] = 1            
+    for n in range(len(g2)):
+        p2[n][g2[n]] = 1
+    return g1,g2,p1,p2   
                 
             
                     
