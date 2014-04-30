@@ -21,7 +21,7 @@ def Main():
     #    print i,p[i]
     
     #Want fitness to be 0 so that number of conflicting placements is minimized
-    for ii in range(5):
+    for ii in range(40):
         count =0
         p,g=Evolve_Mutation(N)
         fit = Fitness(p)
