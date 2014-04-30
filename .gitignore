@@ -150,7 +150,6 @@ ClientBin/
 *.[Pp]ublish.xml
 *.pfx
 *.publishsettings
-N_Queens_Solutions.txt
 
 # RIA/Silverlight projects
 Generated_Code/
