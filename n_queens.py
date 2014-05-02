@@ -8,7 +8,8 @@ rnd.seed()
 
 def Main():
     ####Setting up the Genotype
-    N = 10  #Number of Queens and size of chessboard(NxN)
+    N = 8  #Number of Queens and size of chessboard(NxN)
+    Runs = 30
     
     
     #p = [[0 for i in range(N)] for j in range(N)] #Used for Testing
@@ -21,7 +22,7 @@ def Main():
     #    print i,p[i]
     
     #Want fitness to be 0 so that number of conflicting placements is minimized
-    for ii in range(10):
+    for ii in range(Runs):
         count =0
         p,g=Evolve_Mutation(N)
         fit = Fitness(p)
@@ -33,7 +34,8 @@ def Main():
                 print p[i]
             count +=1
         #Writing solutions to file
-        solution = open("N_Queens_Solutions.txt",'a')
+        solution = open("N_Queens_Solutions_Mutation.txt",'a')
+        print "HI"
         solution.write((str(g)+"--->"+str(count)+"\n"))
         solution.close()
    
